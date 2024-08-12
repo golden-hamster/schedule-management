@@ -4,13 +4,14 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class Schedule {
 
     @Setter
     private Long id;
 
-    private String todo;
+    private String toDo;
 
     private String createdBy;
 
@@ -24,14 +25,8 @@ public class Schedule {
 
     private Long ManagerId;
 
-    private Schedule(String todo, String createdBy, String password, Long managerId) {
-        this.todo = todo;
-        this.createdBy = createdBy;
-        this.password = password;
-        this.ManagerId = managerId;
+    public static Schedule of(Long id, String toDo, String createdBy, LocalDateTime createdAt, LocalDateTime modifiedAt, String password, Long managerId) {
+        return new Schedule(id, toDo, createdBy, createdAt, modifiedAt, password, managerId);
     }
 
-    public static Schedule of(String todo, String createdBy, String password, Long managerId) {
-        return new Schedule(todo, createdBy, password, managerId);
-    }
 }

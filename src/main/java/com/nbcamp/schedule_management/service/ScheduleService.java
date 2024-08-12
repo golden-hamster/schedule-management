@@ -20,4 +20,9 @@ public class ScheduleService {
         Schedule schedule = scheduleRepository.save(scheduleRequest.toEntity()).orElseThrow(RuntimeException::new);
         return ScheduleResponse.from(schedule);
     }
+
+    public ScheduleResponse findById(Long scheduleId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(RuntimeException::new);
+        return ScheduleResponse.from(schedule);
+    }
 }

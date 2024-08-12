@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 @Getter
 public class ScheduleResponse {
     private Long id;
-    private String todo;
+    private String toDo;
     private String createdBy;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
     public static ScheduleResponse from(Schedule schedule) {
-        return new ScheduleResponse(schedule.getId(), schedule.getTodo(), schedule.getCreatedBy(), schedule.getCreatedAt(), schedule.getModifiedAt());
+        return new ScheduleResponse(schedule.getId(), schedule.getToDo(), schedule.getCreatedBy(), schedule.getCreatedAt(), schedule.getModifiedAt());
     }
 }
