@@ -2,6 +2,7 @@ package com.nbcamp.schedule_management.controller;
 
 import com.nbcamp.schedule_management.dto.*;
 import com.nbcamp.schedule_management.service.ScheduleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,7 +18,7 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @PostMapping
-    public ResponseEntity<ScheduleResponse> saveSchedule(@RequestBody ScheduleRequest scheduleRequest) {
+    public ResponseEntity<ScheduleResponse> saveSchedule(@RequestBody @Valid ScheduleRequest scheduleRequest) {
         ScheduleResponse scheduleResponse = scheduleService.saveSchedule(scheduleRequest);
         return ResponseEntity.ok(scheduleResponse);
     }
@@ -38,13 +39,13 @@ public class ScheduleController {
     }
 
     @PutMapping("/{scheduleId}")
-    public ResponseEntity<ScheduleResponse> updateSchedule(@PathVariable Long scheduleId, @RequestBody ScheduleUpdateRequest scheduleUpdateRequest) {
+    public ResponseEntity<ScheduleResponse> updateSchedule(@PathVariable Long scheduleId, @RequestBody @Valid ScheduleUpdateRequest scheduleUpdateRequest) {
         ScheduleResponse scheduleResponse = scheduleService.updateSchedule(scheduleId, scheduleUpdateRequest);
         return ResponseEntity.ok(scheduleResponse);
     }
 
     @DeleteMapping("/{scheduleId}")
-    public ResponseEntity<Void> deleteSchedule(@PathVariable Long scheduleId, @RequestBody ScheduleDeleteRequest scheduleDeleteRequest) {
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Long scheduleId, @RequestBody @Valid ScheduleDeleteRequest scheduleDeleteRequest) {
         scheduleService.deleteSchedule(scheduleId, scheduleDeleteRequest);
         return ResponseEntity.noContent().build();
     }
