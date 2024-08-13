@@ -3,7 +3,7 @@
 ---
 
 ## ERD
-(https://github.com/user-attachments/assets/b1581f3a-5f37-4b2a-9776-7a9c45202cc2)
+https://github.com/user-attachments/assets/b1581f3a-5f37-4b2a-9776-7a9c45202cc2
 
 ---
 
