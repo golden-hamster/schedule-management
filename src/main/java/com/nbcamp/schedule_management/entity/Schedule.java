@@ -13,8 +13,6 @@ public class Schedule {
 
     private String toDo;
 
-    private String createdBy;
-
     @Setter
     private LocalDateTime createdAt;
 
@@ -25,8 +23,8 @@ public class Schedule {
 
     private Long ManagerId;
 
-    public static Schedule of(Long id, String toDo, String createdBy, LocalDateTime createdAt, LocalDateTime modifiedAt, String password, Long managerId) {
-        return new Schedule(id, toDo, createdBy, createdAt, modifiedAt, password, managerId);
+    public static Schedule of(Long id, String toDo, LocalDateTime createdAt, LocalDateTime modifiedAt, String password, Long managerId) {
+        return new Schedule(id, toDo, createdAt, modifiedAt, password, managerId);
     }
 
 }

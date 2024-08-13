@@ -1,5 +1,6 @@
 package com.nbcamp.schedule_management.dto;
 
+import com.nbcamp.schedule_management.entity.Manager;
 import com.nbcamp.schedule_management.entity.Schedule;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,11 +13,11 @@ import java.time.LocalDateTime;
 public class ScheduleResponse {
     private Long id;
     private String toDo;
-    private String createdBy;
+    private String managerName;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public static ScheduleResponse from(Schedule schedule) {
-        return new ScheduleResponse(schedule.getId(), schedule.getToDo(), schedule.getCreatedBy(), schedule.getCreatedAt(), schedule.getModifiedAt());
+    public static ScheduleResponse from(Schedule schedule, Manager manager) {
+        return new ScheduleResponse(schedule.getId(), schedule.getToDo(), manager.getName(), schedule.getCreatedAt(), schedule.getModifiedAt());
     }
 }

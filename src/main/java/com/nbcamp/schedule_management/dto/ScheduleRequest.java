@@ -7,10 +7,9 @@ import lombok.Getter;
 public class ScheduleRequest {
     private String toDo;
     private String password;
-    private String createdBy;
     private Long managerId;
 
     public Schedule toEntity() {
-        return Schedule.of(null, toDo, createdBy, null, null, password, managerId);
+        return Schedule.of(null, toDo, null, null, password, managerId);
     }
 }
