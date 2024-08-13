@@ -1,6 +1,7 @@
 package com.nbcamp.schedule_management.service;
 
 import com.nbcamp.schedule_management.dto.JoinRequest;
+import com.nbcamp.schedule_management.exception.ManagerNotFoundException;
 import com.nbcamp.schedule_management.repository.ManagerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,6 @@ public class ManagerService {
 
     @Transactional
     public void saveManager(JoinRequest joinRequest) {
-        managerRepository.save(joinRequest.toEntity()).orElseThrow(RuntimeException::new);
+        managerRepository.save(joinRequest.toEntity()).orElseThrow(ManagerNotFoundException::new);
     }
 }
