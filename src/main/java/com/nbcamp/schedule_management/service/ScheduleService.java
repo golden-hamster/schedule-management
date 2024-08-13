@@ -1,9 +1,6 @@
 package com.nbcamp.schedule_management.service;
 
-import com.nbcamp.schedule_management.dto.ScheduleListResponse;
-import com.nbcamp.schedule_management.dto.ScheduleRequest;
-import com.nbcamp.schedule_management.dto.ScheduleResponse;
-import com.nbcamp.schedule_management.dto.ScheduleUpdateRequest;
+import com.nbcamp.schedule_management.dto.*;
 import com.nbcamp.schedule_management.entity.Manager;
 import com.nbcamp.schedule_management.entity.Schedule;
 import com.nbcamp.schedule_management.repository.ManagerRepository;
@@ -51,14 +48,21 @@ public class ScheduleService {
     public ScheduleResponse updateSchedule(Long scheduleId, ScheduleUpdateRequest scheduleUpdateRequest) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(RuntimeException::new);
         Manager manager = managerRepository.findById(scheduleUpdateRequest.getManagerId()).orElseThrow(RuntimeException::new);
-        validPassword(schedule, scheduleUpdateRequest.getPassword());
+        validatePassword(schedule, scheduleUpdateRequest.getPassword());
         schedule.setToDo(scheduleUpdateRequest.getToDo());
         schedule.setManagerId(scheduleUpdateRequest.getManagerId());
         Schedule updatedSchedule = scheduleRepository.update(schedule).orElseThrow(RuntimeException::new);
         return ScheduleResponse.from(updatedSchedule, manager);
     }
 
-    public void validPassword(Schedule schedule, String password) {
+    @Transactional
+    public void deleteSchedule(Long scheduleId, ScheduleDeleteRequest scheduleDeleteRequest) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(RuntimeException::new);
+        validatePassword(schedule, scheduleDeleteRequest.getPassword());
+        scheduleRepository.delete(schedule);
+    }
+
+    public void validatePassword(Schedule schedule, String password) {
         if (!schedule.getPassword().equals(password)) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }

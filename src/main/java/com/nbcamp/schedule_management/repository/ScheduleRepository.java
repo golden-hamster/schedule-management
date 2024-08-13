@@ -2,6 +2,7 @@ package com.nbcamp.schedule_management.repository;
 
 import com.nbcamp.schedule_management.entity.Schedule;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -60,7 +61,7 @@ public class ScheduleRepository {
 
     public Optional<Schedule> findById(Long scheduleId) {
         String sql = "SELECT id, to_do, password, created_at, modified_at, manager_id FROM schedule WHERE id = ?";
-
+        try {
             Schedule schedule = jdbcTemplate.queryForObject(sql, new RowMapper<Schedule>() {
                 @Override
                 public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -76,6 +77,10 @@ public class ScheduleRepository {
             }, scheduleId);
 
             return Optional.ofNullable(schedule);
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+
     }
 
     public Page<Schedule> findSchedules(LocalDate modifiedAt, String managerName, Pageable pageable) {
@@ -136,5 +141,10 @@ public class ScheduleRepository {
         }
 
         return Optional.of(schedule);
+    }
+
+    public void delete(Schedule schedule) {
+        String sql = "DELETE FROM schedule WHERE id = ?";
+        jdbcTemplate.update(sql, schedule.getId());
     }
 }

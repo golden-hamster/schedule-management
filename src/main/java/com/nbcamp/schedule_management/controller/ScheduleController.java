@@ -1,9 +1,6 @@
 package com.nbcamp.schedule_management.controller;
 
-import com.nbcamp.schedule_management.dto.ScheduleListResponse;
-import com.nbcamp.schedule_management.dto.ScheduleRequest;
-import com.nbcamp.schedule_management.dto.ScheduleResponse;
-import com.nbcamp.schedule_management.dto.ScheduleUpdateRequest;
+import com.nbcamp.schedule_management.dto.*;
 import com.nbcamp.schedule_management.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -44,5 +41,11 @@ public class ScheduleController {
     public ResponseEntity<ScheduleResponse> updateSchedule(@PathVariable Long scheduleId, @RequestBody ScheduleUpdateRequest scheduleUpdateRequest) {
         ScheduleResponse scheduleResponse = scheduleService.updateSchedule(scheduleId, scheduleUpdateRequest);
         return ResponseEntity.ok(scheduleResponse);
+    }
+
+    @DeleteMapping("/{scheduleId}")
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Long scheduleId, @RequestBody ScheduleDeleteRequest scheduleDeleteRequest) {
+        scheduleService.deleteSchedule(scheduleId, scheduleDeleteRequest);
+        return ResponseEntity.noContent().build();
     }
 }
