@@ -112,13 +112,14 @@ public class ScheduleRepository {
         List<Schedule> schedules = jdbcTemplate.query(sql.toString(), params.toArray(), new RowMapper<Schedule>() {
             @Override
             public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return Schedule.of(rs.getLong("id"),
-                        rs.getString("to_do"),
-                        rs.getTimestamp("created_at").toLocalDateTime(),
-                        rs.getTimestamp("modified_at").toLocalDateTime(),
-                        rs.getString("password"),
-                        rs.getLong("manager_id"));
+                Long scheduleId = rs.getLong("id");
+                String toDo = rs.getString("to_do");
+                String password = rs.getString("password");
+                LocalDateTime createdAt = rs.getTimestamp("created_at").toLocalDateTime();
+                LocalDateTime modifiedAt = rs.getTimestamp("modified_at").toLocalDateTime();
+                Long managerId = rs.getLong("manager_id");
 
+                return Schedule.of(scheduleId, toDo, createdAt, modifiedAt, password, managerId);
             }
         });
 
