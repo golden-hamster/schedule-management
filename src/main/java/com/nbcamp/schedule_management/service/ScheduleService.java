@@ -3,6 +3,7 @@ package com.nbcamp.schedule_management.service;
 import com.nbcamp.schedule_management.dto.ScheduleListResponse;
 import com.nbcamp.schedule_management.dto.ScheduleRequest;
 import com.nbcamp.schedule_management.dto.ScheduleResponse;
+import com.nbcamp.schedule_management.dto.ScheduleUpdateRequest;
 import com.nbcamp.schedule_management.entity.Manager;
 import com.nbcamp.schedule_management.entity.Schedule;
 import com.nbcamp.schedule_management.repository.ManagerRepository;
@@ -44,5 +45,22 @@ public class ScheduleService {
 
         Page<Schedule> schedules = scheduleRepository.findSchedules(modifiedAt, managerName, pageable);
         return schedules.map(schedule -> ScheduleResponse.from(schedule, managerRepository.findById(schedule.getManagerId()).orElseThrow(RuntimeException::new)));
+    }
+
+    @Transactional
+    public ScheduleResponse updateSchedule(Long scheduleId, ScheduleUpdateRequest scheduleUpdateRequest) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(RuntimeException::new);
+        Manager manager = managerRepository.findById(scheduleUpdateRequest.getManagerId()).orElseThrow(RuntimeException::new);
+        validPassword(schedule, scheduleUpdateRequest.getPassword());
+        schedule.setToDo(scheduleUpdateRequest.getToDo());
+        schedule.setManagerId(scheduleUpdateRequest.getManagerId());
+        Schedule updatedSchedule = scheduleRepository.update(schedule).orElseThrow(RuntimeException::new);
+        return ScheduleResponse.from(updatedSchedule, manager);
+    }
+
+    public void validPassword(Schedule schedule, String password) {
+        if (!schedule.getPassword().equals(password)) {
+            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+        }
     }
 }

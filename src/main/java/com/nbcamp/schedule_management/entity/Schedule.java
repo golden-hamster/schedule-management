@@ -5,18 +5,15 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Getter
+@Getter @Setter
 public class Schedule {
 
-    @Setter
     private Long id;
 
     private String toDo;
 
-    @Setter
     private LocalDateTime createdAt;
 
-    @Setter
     private LocalDateTime modifiedAt;
 
     private String password;

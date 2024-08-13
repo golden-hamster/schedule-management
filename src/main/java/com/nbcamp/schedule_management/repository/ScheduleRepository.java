@@ -36,7 +36,6 @@ public class ScheduleRepository {
         schedule.setModifiedAt(LocalDateTime.now());
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        try {
             jdbcTemplate.update(con -> {
                 PreparedStatement pstmt = con.prepareStatement(sql, RETURN_GENERATED_KEYS);
 
@@ -56,16 +55,12 @@ public class ScheduleRepository {
 
             schedule.setId(key.longValue());
             return Optional.of(schedule);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Optional.empty();
-        }
+
     }
 
     public Optional<Schedule> findById(Long scheduleId) {
         String sql = "SELECT id, to_do, password, created_at, modified_at, manager_id FROM schedule WHERE id = ?";
 
-        try {
             Schedule schedule = jdbcTemplate.queryForObject(sql, new RowMapper<Schedule>() {
                 @Override
                 public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -81,10 +76,6 @@ public class ScheduleRepository {
             }, scheduleId);
 
             return Optional.ofNullable(schedule);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Optional.empty();
-        }
     }
 
     public Page<Schedule> findSchedules(LocalDate modifiedAt, String managerName, Pageable pageable) {
@@ -127,5 +118,23 @@ public class ScheduleRepository {
         });
 
         return new PageImpl<>(schedules, pageable, totalItems != null ? totalItems : 0);
+    }
+
+    public Optional<Schedule> update(Schedule schedule) {
+        String sql = "UPDATE schedule SET to_do = ?, manager_id = ?, modified_at = ? WHERE id = ?";
+
+        schedule.setModifiedAt(LocalDateTime.now());
+
+        int updatedRows = jdbcTemplate.update(sql,
+                schedule.getToDo(),
+                schedule.getManagerId(),
+                Timestamp.valueOf(schedule.getModifiedAt()),
+                schedule.getId());
+
+        if (updatedRows == 0) {
+            return Optional.empty();
+        }
+
+        return Optional.of(schedule);
     }
 }

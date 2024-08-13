@@ -3,6 +3,7 @@ package com.nbcamp.schedule_management.controller;
 import com.nbcamp.schedule_management.dto.ScheduleListResponse;
 import com.nbcamp.schedule_management.dto.ScheduleRequest;
 import com.nbcamp.schedule_management.dto.ScheduleResponse;
+import com.nbcamp.schedule_management.dto.ScheduleUpdateRequest;
 import com.nbcamp.schedule_management.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -37,5 +38,11 @@ public class ScheduleController {
             @PageableDefault(page = 0, size = 10, sort = "modifiedAt", direction = Sort.Direction.DESC) Pageable pageable) {
         ScheduleListResponse scheduleListResponse = ScheduleListResponse.of(scheduleService.findSchedules(modifiedDate, managerName, pageable));
         return ResponseEntity.ok(scheduleListResponse);
+    }
+
+    @PutMapping("/{scheduleId}")
+    public ResponseEntity<ScheduleResponse> updateSchedule(@PathVariable Long scheduleId, @RequestBody ScheduleUpdateRequest scheduleUpdateRequest) {
+        ScheduleResponse scheduleResponse = scheduleService.updateSchedule(scheduleId, scheduleUpdateRequest);
+        return ResponseEntity.ok(scheduleResponse);
     }
 }
