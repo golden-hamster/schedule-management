@@ -44,7 +44,7 @@ public class ScheduleService {
         }
 
         Page<Schedule> schedules = scheduleRepository.findSchedules(modifiedAt, managerName, pageable);
-        return schedules.map(schedule -> ScheduleResponse.from(schedule, managerRepository.findById(schedule.getManagerId()).orElseThrow(RuntimeException::new)));
+        return schedules.map(schedule -> ScheduleResponse.from(schedule, managerRepository.findById(schedule.getManagerId()).orElseThrow(ManagerNotFoundException::new)));
     }
 
     @Transactional
